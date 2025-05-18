@@ -4,7 +4,8 @@ numpy==1.23.5
 Cython
 setuptools
 wheel
+scikit-learn
 statsmodels
 matplotlib
 plotly
-pmdarima==1.8.2
+pmdarima==2.0.3
