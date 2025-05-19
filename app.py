@@ -8,9 +8,31 @@ from statsmodels.tsa.arima.model import ARIMA
 from pmdarima import auto_arima
 import matplotlib.pyplot as plt
 import warnings
+import pathlib
 
 # Suppress warnings
 warnings.filterwarnings("ignore")
+
+
+def show_html(filename, scrolling=True, height=800):
+    """
+    Load an HTML file from the templates/ folder and display it in Streamlit.
+    """
+    try:
+        # Read the file's text
+        html_content = pathlib.Path(f"templates/{filename}").read_text(encoding="utf-8")
+
+        # Display via st.components.v1.html
+        st.components.v1.html(
+            html_content,
+            height=height,
+            scrolling=scrolling,
+            # Try using unsafe_allow_html if your HTML uses inline JS/CSS that
+            # might otherwise get sandboxed.
+            # unsafe_allow_html=True,
+        )
+    except Exception as e:
+        st.error(f"Could not load {filename}: {e}")
 
 # Clean data 
 def clean_numeric(value):
