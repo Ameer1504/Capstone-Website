@@ -247,7 +247,6 @@ def main():
     
     # Tab 1: Home (Landing Page)
     with tab_list[0]:
-        st.subheader("Welcome to Our Water-Themed Homepage!")
         # Show your landing page HTML
         show_html("landing_page.html", height=900)
 
