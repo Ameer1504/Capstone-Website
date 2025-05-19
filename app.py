@@ -90,6 +90,21 @@ def fit_arima_model(series, forecast_years):
         return None, None, None
 
 def main():
+    st.set_page_config(page_title="My ARIMA + HTML Demo", layout="wide")
+
+    st.sidebar.title("Navigation")
+    choice = st.sidebar.selectbox(
+        "Choose a page",
+        ["ARIMA", "index.html", "indexnew.html", "svg.html", "waterscore.html"]
+    )
+
+    if choice == "ARIMA":
+        run_arima_forecast()
+    else:
+        # Show HTML file from templates/ folder
+        show_html(choice)
+
+def main():
     st.set_page_config(
         page_title="Pollutant ARIMA Forecast",
         layout="wide",
