@@ -1,4 +1,6 @@
 import streamlit as st
+import pathlib
+import warnings
 import pandas as pd
 import numpy as np
 import plotly.express as px
@@ -7,34 +9,32 @@ import re
 from statsmodels.tsa.arima.model import ARIMA
 from pmdarima import auto_arima
 import matplotlib.pyplot as plt
-import warnings
-import pathlib
 
-# Suppress warnings
+#############################
+#  SUPPRESS WARNINGS
+#############################
 warnings.filterwarnings("ignore")
 
-
-def show_html(filename, scrolling=True, height=800):
+#############################
+#  (A) HELPER FUNCTION
+#############################
+def show_html(filename, height=900, scrolling=True):
     """
-    Load an HTML file from the templates/ folder and display it in Streamlit.
+    Loads an HTML file from templates/ and displays it in an iframe within Streamlit.
     """
     try:
-        # Read the file's text
-        html_content = pathlib.Path(f"templates/{filename}").read_text(encoding="utf-8")
-
-        # Display via st.components.v1.html
-        st.components.v1.html(
-            html_content,
-            height=height,
-            scrolling=scrolling,
-            # Try using unsafe_allow_html if your HTML uses inline JS/CSS that
-            # might otherwise get sandboxed.
-            # unsafe_allow_html=True,
-        )
+        html_path = pathlib.Path(f"templates/{filename}")
+        html_content = html_path.read_text(encoding="utf-8")
+        
+        # If you need advanced JS, pass unsafe_allow_html=True, or other parameters
+        st.components.v1.html(html_content, height=height, scrolling=scrolling)
     except Exception as e:
         st.error(f"Could not load {filename}: {e}")
 
-# Clean data 
+
+#############################
+#  (B) DATA FUNCTIONS
+#############################
 def clean_numeric(value):
     if pd.isna(value):
         return np.nan
@@ -49,75 +49,83 @@ def clean_numeric(value):
 
 @st.cache_data
 def load_and_preprocess_data():
+    """
+    Loads data/nivm_dataset.csv, cleans up, returns a DataFrame.
+    """
     try:
-        df = pd.read_csv("data/nivm_dataset.csv", usecols=lambda col: col not in ['Jaar', 'Watertype', 'Hoofdgrondsoort regio', 'Bedrijfstype', 'Seizoen', 'Aantal bedrijven', 'Eenheid'])
+        df = pd.read_csv(
+            "data/nivm_dataset.csv",
+            usecols=lambda col: col not in [
+                'Jaar', 'Watertype', 'Hoofdgrondsoort regio',
+                'Bedrijfstype', 'Seizoen', 'Aantal bedrijven', 'Eenheid'
+            ]
+        )
         na_rows = df[df.isna().any(axis=1)]
         if not na_rows.empty:
             st.warning(f"Found {len(na_rows)} rows with NA values:")
             st.dataframe(na_rows.head())  # Show first 5 rows with NAs
-        
+
         df['Gem'] = df['Gem'].apply(clean_numeric)
-   
+
         if 'Year' in df.columns:
             df['Year'] = df['Year'].astype(int)
-            
+
         return df
-    
+
     except Exception as e:
         st.error(f"Error loading data: {e}")
         return None
 
+
+#############################
+#  (C) FIT ARIMA MODEL
+#############################
 def fit_arima_model(series, forecast_years):
+    """
+    Fits an ARIMA model using pmdarima's auto_arima and returns
+    the model, predictions, and confidence intervals.
+    """
     try:
-        model = auto_arima(series,
-                                start_p=0, start_q=0,
-                                max_p=20, max_q=20,  
-                                seasonal=False,  
-                                trace=True,
-                                error_action='ignore',  
-                                suppress_warnings=True, 
-                                stepwise=False)
-                
-        # Convert predictions to numpy array to avoid pandas indexing issues
+        model = auto_arima(
+            series,
+            start_p=0, start_q=0,
+            max_p=20, max_q=20,
+            seasonal=False,
+            trace=True,
+            error_action='ignore',
+            suppress_warnings=True,
+            stepwise=False
+        )
+
         predictions = model.predict(n_periods=forecast_years)
         conf_int = model.predict(n_periods=forecast_years, return_conf_int=True)[1]
         conf_int = pd.DataFrame(conf_int, columns=['lower', 'upper'])
-        
+
         return model, np.array(predictions), conf_int
-    
+
     except Exception as e:
         st.warning(f"ARIMA modeling failed: {str(e)}")
         return None, None, None
 
-def main():
-    st.set_page_config(page_title="My ARIMA + HTML Demo", layout="wide")
 
-    st.sidebar.title("Navigation")
-    choice = st.sidebar.selectbox(
-        "Choose a page",
-        ["ARIMA", "index.html", "indexnew.html", "svg.html", "waterscore.html"]
-    )
-
-    if choice == "ARIMA":
-        run_arima_forecast()
-    else:
-        # Show HTML file from templates/ folder
-        show_html(choice)
-
-def main():
-    st.set_page_config(
-        page_title="Pollutant ARIMA Forecast",
-        layout="wide",
-        initial_sidebar_state="expanded"
-    )
-
+#############################
+#  (D) ARIMA FORECAST PAGE
+#############################
+def run_arima_forecast():
+    """
+    This function sets up the ARIMA forecast page:
+    1. Loads data
+    2. Sidebar filters
+    3. Fits ARIMA
+    4. Plots results
+    """
     st.title("Pollutant Concentration Forecast")
-    
+
     df = load_and_preprocess_data()
     if df is None:
         st.stop()
 
-    # Sidebar filters
+    # -- Sidebar filters
     with st.sidebar:
         st.header("Filters")
         component = st.selectbox("Component", df['Component'].unique())
@@ -127,7 +135,7 @@ def main():
         season = st.selectbox("Season", df['Season'].unique())
         forecast_years = st.slider("Forecast Years", 1, 10, 5)
 
-    # Filter data
+    # -- Filter data
     filtered_data = df[
         (df['Component'] == component) &
         (df['Water type'] == water_type) &
@@ -140,18 +148,18 @@ def main():
         st.warning("Not enough data points for ARIMA modeling (need at least 3 years)")
         st.stop()
 
-    # Prepare time series
+    # -- Prepare time series
     time_series = filtered_data.set_index('Year')['Gem']
 
-    # Fit ARIMA model
+    # -- Fit ARIMA model
     model, predictions, conf_int = fit_arima_model(time_series, forecast_years)
     if predictions is None:
         st.stop()
 
-    # Create visualization
-    last_data_year = time_series.index[-1]  
+    # -- Create visualization
+    last_data_year = time_series.index[-1]
     current_year = 2023
-    future_years = list(range(current_year, current_year + forecast_years )) 
+    future_years = list(range(current_year, current_year + forecast_years))
 
     # Values for metrics (last actual + predictions)
     pred_values = [time_series.iloc[-1]] + list(predictions)
@@ -160,9 +168,9 @@ def main():
     trend = predictions[0] - time_series.iloc[-1]
 
     fig = px.line(
-        filtered_data, 
-        x='Year', 
-        y="Gem", 
+        filtered_data,
+        x='Year',
+        y="Gem",
         title=f"{component} Concentration Trend",
         labels={'Year': 'Year', "Gem": 'Concentration (mg/l)'}
     )
@@ -182,13 +190,13 @@ def main():
         fig.add_scatter(
             x=future_years,
             y=conf_int['upper'],
-            mode='none',  # Invisible markers
+            mode='none',
             name='Confidence Interval',
             hovertemplate=': %{y:.2f}-%{customdata[0]:.2f} mg/l',
             customdata=np.column_stack([conf_int['lower']]),
             showlegend=False
         )
-        
+
         fig.add_scatter(
             x=future_years + future_years[::-1],
             y=conf_int['upper'].tolist() + conf_int['lower'][::-1].tolist(),
@@ -196,9 +204,9 @@ def main():
             fill='toself',
             fillcolor='rgba(255,165,0,0.2)',
             line=dict(color='rgba(255,255,255,0)'),
-            hoverinfo='skip',  # Disable hover for this trace
+            hoverinfo='skip',
             showlegend=True,
-            name='Confidence Interval'  # Hidden from legend
+            name='Confidence Interval'
         )
 
     fig.update_layout(
@@ -212,53 +220,81 @@ def main():
         hovermode="x unified"
     )
 
-    # Show the chart
     st.plotly_chart(fig, use_container_width=True)
 
-    # Display metrics
+    # -- Display metrics
     if len(predictions) > 0:
         trend = predictions[0] - time_series.iloc[-1]
     else:
         trend = 0
-    
+
     col1, col2, col3 = st.columns(3)
     with col1:
         st.metric(
-            "Current Level(year 2022)", 
+            "Current Level (year 2022)",
             f"{time_series.iloc[-1]:.1f} mg/l",
-            # f"Year {time_series.index[-1]}"
         )
     with col2:
         st.metric(
-            "Next Year Forecast", 
+            "Next Year Forecast",
             f"{pred_values[1]:.1f} mg/l",
             f"{trend:.1f} change"
         )
     with col3:
         st.metric(
-            f"{forecast_years} Year Forecast", 
+            f"{forecast_years} Year Forecast",
             f"{pred_values[-1]:.1f} mg/l",
             f"{(pred_values[-1] - time_series.iloc[-1]):.1f} total change"
         )
 
-    # Model information
+    # -- Model info
     with st.expander("Model Details"):
         if model is not None:
             st.write(f"ARIMA Model Order: {model.order}")
             st.write(f"Model AIC: {model.aic():.2f}")
-        
+
         st.write(f"Historical Data Points: {len(time_series)}")
         st.write(f"Forecast Period: {forecast_years} years")
-    
-    # Show data source
+
+    # -- Data source
     st.markdown(
         """
         <div style="margin-top: 10px; font-size: 0.9em; color: #555;">
-            <b>Data source:</b> <a href="https://lmm.rivm.nl/Tabel/2021/Nitraat" 
-            target="_blank" style="color: #0066cc;">Landelijk Meetnet effecten Mestbeleid, RIVM</a>
+            <b>Data source:</b> 
+            <a href="https://lmm.rivm.nl/Tabel/2021/Nitraat" 
+               target="_blank" style="color: #0066cc;">
+               Landelijk Meetnet effecten Mestbeleid, RIVM
+            </a>
         </div>
         """,
         unsafe_allow_html=True
     )
+
+
+#############################
+#  (E) MAIN APP
+#############################
+def main():
+    """
+    Main entry point for the Streamlit app.
+    Provides a sidebar for navigation:
+        - Home
+        - Pollutant Forecast
+    """
+    st.set_page_config(page_title="Water Sustainability Demo", layout="wide")
+
+    st.sidebar.title("Navigation")
+    page_choice = st.sidebar.selectbox(
+        "Select Page",
+        ["Home", "Pollutant Forecast"]
+    )
+
+    if page_choice == "Home":
+        # Show your new landing page (e.g. landing_page.html in templates/)
+        show_html("landing_page.html", height=1000)
+    elif page_choice == "Pollutant Forecast":
+        run_arima_forecast()
+
+
 if __name__ == "__main__":
     main()
