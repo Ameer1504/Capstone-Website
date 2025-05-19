@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nitrogen emissions calculator</title>
+    <link rel="stylesheet" href="static/styles.css">
+    <script src="scriptnew.js" defer></script> 
+</head>
+  <body>
+    <!-- INPUT -->
+    <div class="header"><h2>Water Score Calculator</h2></div>
+    <div class="container">
+        <div class="calculation-section">
+        <div class="band">
+          <h2>Feed Information</h2> </div>
+        <div class="interior">
+        <label for="lowproteinfeed">Do you use low protein feed?</label>
+        <select id="lowproteinfeed">
+          <option value="">Select</option>
+          <option value="yes">Yes</option>
+          <option value="no">No</option>
+        </select>
+        <button class="info-button" onclick="toggleInfo('info-region')">?</button>
+        <div id="info-feed" class="info-text hidden">
+          Do you use adjusted feed with low protein content?
+          </div> <br> <br>
+          <label for="grindfeed">Do you grind the feed?</label>
+          <select id="grindfeed">
+            <option value="">Select</option>
+            <option value="yes">Yes</option>
+            <option value="no">No</option>
+          </select>
+          <button class="info-button" onclick="toggleInfo('info-region')">?</button>
+          <div id="info-feed" class="info-text hidden">
+            Grinding the feed maximizes its efficiency and reduces nitrogen loss.
+            </div> <br> <br>
+        <label for="additives">Do you use feed additives (such as enzymes, probiotics and organic acids)?
+          </label>
+          <select id="additives">
+            <option value="">Select</option>
+            <option value="yes">Yes</option>
+            <option value="no">No</option>
+          </select>
+          <button class="info-button" onclick="toggleInfo('info-region')">?</button>
+          <div id="info-additives" class="info-text hidden">
+            Using feed additives like enzymes, probiotics, and organic acids improves nutrient absorption in livestock, which reduces nitrogen excretion and lowers nitrogen pollution in manure.
+            </div> <br> <br>
+
+            <div class="band">
+                <h2>Production Efficiency</h2> </div>
+              <div class="interior">
+              <label for="injection">Do you use growth hormone injections?</label>
+              <select id="injection">
+                <option value="">Select</option>
+                <option value="yes">Yes</option>
+                <option value="no">No</option>
+              </select>
+              <button class="info-button" onclick="toggleInfo('info-injection')">?</button>
+              <div id="info-injection" class="info-text hidden">
+                Growth hormone injections increase feed efficiency and animal productivity, which reduces the amount of nitrogen excreted per unit of production. 
+                </div> <br> <br>
+                <label for="milking">Do you have an increased milking frequency?</label>
+                <select id="milking">
+                  <option value="">Select</option>
+                  <option value="yes">Yes</option>
+                  <option value="no">No</option>
+                </select>
+                <button class="info-button" onclick="toggleInfo('info-milking')">?</button>
+                <div id="info-milking" class="info-text hidden">
+                    Increased milking frequency boosts milk production without a proportional rise in nitrogen excretion, leading to lower nitrogen waste per unit of output. 
+                  </div> <br> <br>
+              <label for="photop">Do you expose your animals to light for extended periods (extended photoperiod)?
+                </label>
+                <select id="photop">
+                  <option value="">Select</option>
+                  <option value="yes">Yes</option>
+                  <option value="no">No</option>
+                </select>
+                <button class="info-button" onclick="toggleInfo('info-photo')">?</button>
+                <div id="info-photo" class="info-text hidden">
+                  Using feed additives like enzymes, probiotics, and organic acids improves nutrient absorption in livestock, which reduces nitrogen excretion and lowers nitrogen pollution in manure.
+                  </div> <br> <br>
+
+                  <div class="band">
+                    <h2>Manure Storage and Application</h2> </div>
+                  <div class="interior">
+                  <label for="manadd">Do you add manure additive such as digestive additives, acidifying additives, and adsorbents?</label>
+                  <select id="manadd">
+                    <option value="">Select</option>
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                  </select>
+                  <button class="info-button" onclick="toggleInfo('info-manadd')">?</button>
+                  <div id="info-manadd" class="info-text hidden">
+                    Growth hormone injections increase feed efficiency and animal productivity, which reduces the amount of nitrogen excreted per unit of production. 
+                    </div> <br> <br>
+                    <label for="season">Do you apply manure to a growing crop or just before the establishment of a crop (in spring instead of autumn)?</label>
+                    <select id="season">
+                      <option value="">Select</option>
+                      <option value="yes">Yes</option>
+                      <option value="no">No</option>
+                    </select>
+                    <button class="info-button" onclick="toggleInfo('info-season')">?</button>
+                    <div id="info-season" class="info-text hidden">
+                        Increased milking frequency boosts milk production without a proportional rise in nitrogen excretion, leading to lower nitrogen waste per unit of output. 
+                      </div> <br> <br>
+                  <label for="excessn">Do you avoid applying excess nitrogen (beyond crop needs)?
+                    </label>
+                    <select id="excessn">
+                      <option value="">Select</option>
+                      <option value="yes">Yes</option>
+                      <option value="no">No</option>
+                    </select>
+                    <button class="info-button" onclick="toggleInfo('info-excessn')">?</button>
+                    <div id="info-excessn" class="info-text hidden">
+                      Using feed additives like enzymes, probiotics, and organic acids improves nutrient absorption in livestock, which reduces nitrogen excretion and lowers nitrogen pollution in manure.
+                      </div> <br> <br>
+                      <div class="band">
+                        <h2>Grazing</h2> </div>
+                      <div class="interior">
+                      <label for="grtime">Do you minimize grazing time?</label>
+                      <select id="grtime">
+                        <option value="">Select</option>
+                        <option value="yes">Yes</option>
+                        <option value="no">No</option>
+                      </select>
+                      <button class="info-button" onclick="toggleInfo('info-grtime')">?</button>
+                      <div id="info-grtime" class="info-text hidden">
+                        Growth hormone injections increase feed efficiency and animal productivity, which reduces the amount of nitrogen excreted per unit of production. 
+                        </div> <br> <br>
+                        <label for="spread">Do you spread watering and supplemental feeding areas evenly?</label>
+                        <select id="spread">
+                          <option value="">Select</option>
+                          <option value="yes">Yes</option>
+                          <option value="no">No</option>
+                        </select>
+                        <button class="info-button" onclick="toggleInfo('info-spread')">?</button>
+                        <div id="info-spread" class="info-text hidden">
+                            Increased milking frequency boosts milk production without a proportional rise in nitrogen excretion, leading to lower nitrogen waste per unit of output. 
+                          </div> <br> <br>
+                      <label for="grseason">Do you avoid grazing in the late autumn or winter?</label>
+                        <select id="grseason">
+                          <option value="">Select</option>
+                          <option value="yes">Yes</option>
+                          <option value="no">No</option>
+                        </select>
+                        <button class="info-button" onclick="toggleInfo('info-grseason')">?</button>
+                        <div id="info-grseason" class="info-text hidden">
+                          Using feed additives like enzymes, probiotics, and organic acids improves nutrient absorption in livestock, which reduces nitrogen excretion and lowers nitrogen pollution in manure.
+                          </div> <br> <br>
+                          <label for="atgrowth">Do you remove the autumn growth through silage harvest?</label>
+                          <select id="atgrowth">
+                            <option value="">Select</option>
+                            <option value="yes">Yes</option>
+                            <option value="no">No</option>
+                          </select>
+                          <button class="info-button" onclick="toggleInfo('info-atgrowth')">?</button>
+                          <div id="info-atgrowth" class="info-text hidden">
+                            Using feed additives like enzymes, probiotics, and organic acids improves nutrient absorption in livestock, which reduces nitrogen excretion and lowers nitrogen pollution in manure.
+                            </div> <br> <br>
+                            <label for="nitrif">Do you apply a nitrification inhibitor?</label>
+                            <select id="nitrif">
+                              <option value="">Select</option>
+                              <option value="yes">Yes</option>
+                              <option value="no">No</option>
+                            </select>
+                            <button class="info-button" onclick="toggleInfo('info-nitrif')"> ? </button>
+                            <div id="info-nitrif" class="info-text hidden">
+                              Using feed additives like enzymes, probiotics, and organic acids improves nutrient absorption in livestock, which reduces nitrogen excretion and lowers nitrogen pollution in manure.
+                              </div> <br> <br>
+                              <div class="band">
+                              <h2>Livestock Intensity</h2> </div>
+                              <div class="interior">
+                              <label for="lstock">Do you reduce livestock desity?</label>
+                              <select id="lstock">
+                                <option value="">Select</option>
+                                <option value="yes">Yes</option>
+                                <option value="no">No</option>
+                              </select>
+                              <button class="info-button" onclick="toggleInfo('info-lstock')">?</button>
+                              <div id="info-lstock" class="info-text hidden">
+                                Growth hormone injections increase feed efficiency and animal productivity, which reduces the amount of nitrogen excreted per unit of production. 
+                                </div> <br> <br>
+            <button id="calculateBtn">Calculate Water Score</button>
+            <div id="result" style="margin-top: 20px; font-weight: bold;"></div>
+        </div> 
+        <script>
+        function calculateWaterScore() {
+            const inputs = {
+              lowProteinFeed: document.getElementById('lowproteinfeed').value === 'yes',
+              grindFeed: document.getElementById('grindfeed').value === 'yes',
+              feedAdditives: document.getElementById('additives').value === 'yes',
+              growthHormones: document.getElementById('injection').value === 'yes',
+              increasedMilking: document.getElementById('milking').value === 'yes',
+              extendedPhotoperiod: document.getElementById('photop').value === 'yes',
+              manureAdditive: document.getElementById('manadd').value === 'yes',
+              applySpring: document.getElementById('season').value === 'yes',
+              avoidExcessN: document.getElementById('excessn').value === 'yes',
+              reduceGrazingTime: document.getElementById('grtime').value === 'yes',
+              spreadGrazing: document.getElementById('spread').value === 'yes',
+              avoidWinterGrazing: document.getElementById('grseason').value === 'yes',
+              harvestAutumnGrowth: document.getElementById('atgrowth').value === 'yes',
+              nitrificationInhibitor: document.getElementById('nitrif').value === 'yes',
+              reduceLivestockDensity: document.getElementById('lstock').value === 'yes',
+            };
+          
+            const weights = {
+              lowProteinFeed: 0.214,
+              grindFeed: 0.179,
+              feedAdditives: 0.607,
+              growthHormones: 0.411,
+              increasedMilking: 0.271,
+              extendedPhotoperiod: 0.317,
+              manureAdditive: 0.284,
+              applySpring: 0.260,
+              avoidExcessN: 0.456,
+              reduceGrazingTime: 0.127,
+              spreadGrazing: 0.404,
+              avoidWinterGrazing: 0.151,
+              harvestAutumnGrowth: 0.168,
+              nitrificationInhibitor: 0.150,
+              reduceLivestockDensity: 0.264,
+            };
+          
+            let totalScore = 0;
+            for (const key in inputs) {
+              if (inputs[key]) {
+                totalScore += weights[key];
+              }
+            }
+          
+            const maxScore = Object.values(weights).reduce((a, b) => a + b, 0);
+            const normalizedScore = totalScore / maxScore;
+          
+            let grade;
+            if (normalizedScore >= 0.8) grade = 'A';
+            else if (normalizedScore >= 0.6) grade = 'B';
+            else if (normalizedScore >= 0.4) grade = 'C';
+            else if (normalizedScore >= 0.2) grade = 'D';
+            else grade = 'E';
+          
+            document.getElementById('result').innerHTML = `Water Score: ${grade}</strong>`;
+          }
+          
+          document.getElementById('calculateBtn').addEventListener('click', calculateWaterScore);
+    </script>
+          
+  </body>

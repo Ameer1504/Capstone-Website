@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nitrogen emissions calculator</title>
+    <link rel="stylesheet" href="static/styles.css">
+    <script src="scriptnew.js" defer></script> 
+</head>
+  <body>
+    <!-- INPUT -->
+    <div class="header"><h2>Nitrogen Emission Calculator</h2></div>
+    <div class="container">
+      <div class="calculation-section">
+      <div class="band">
+        <h2>Farm Location Information</h2> </div>
+      <div class="interior">
+      <label for="region">Region</label>
+      <select id="region">
+        <option value="">Select</option>
+        <option value="ijssel">Gelderland</option>
+        <option value="ijssel">Overijssel</option>
+        <option value="ijsselmeer">Noord-Holland</option>
+        <option value="ijsselmeer">Friesland</option>
+        <option value="ijsselmeer">Flevoland</option>
+        <option value="ijsselmeer">Groningen</option>
+        <option value="ijsselmeer">Drenthe</option>
+        <option value="maas">Limburg</option>
+        <option value="maas">Noord-Brabant</option>
+        <option value="central">Zuid-Holland</option>
+        <option value="central">Utrecht</option>
+        <option value="south-delta">Zeeland</option>
+      </select>
+      <button class="info-button" onclick="toggleInfo('info-region')">?</button>
+      <div id="info-region" class="info-text hidden">
+        Enter the region of the Netherlands where your farm is located.
+      </div> 
+    
+      <br> <br>
+      <label for="size-ha">Size of farm (in hA):</label>
+      <input type="number" id="size-ha" min="0" placeholder="Type Number" style="width: 100px;">
+      <button class="info-button" onclick="toggleInfo('info-size')">?</button>
+      <div id="info-size" class="info-text hidden">
+        Enter the size of your farm in hectares. 
+      </div> </div>
+     
+      <div class="band">
+        <h2>Animal Information</h2> </div>
+        <div class="interior">
+          <label for="cows">Amount of cows:
+          </label>
+        <input type="number" id="cows" min="0" placeholder="Type Number" style="width: 100px;">
+        <button class="info-button" onclick="toggleInfo('info-cows')">?</button>
+        <div id="info-cows" class="info-text hidden">
+          Enter the number of cows in your farm.
+        </div>
+
+      <br><br>
+      <label for="feed">Feed type:</label>  
+      <select id="feed">
+        <option value="">Select</option>
+        <option value="corn">Corn</option>
+        <option value="grass">Grass</option>
+        <option value="corngrass">Corn + Grass</option>
+      </select>
+      <button class="info-button" onclick="toggleInfo('info-feed')">?</button>
+      <div id="info-feed" class="info-text hidden">
+        Enter the type of feed the cows are consuming.
+      </div></div>
+
+    
+      <div class="band">
+        <h2>Farm Information</h2> 
+      </div> 
+      <div class="interior">
+      <label for="soil">Soil Type:</label>
+      <select id="soil">
+        <option value="">Select</option>
+        <option value="sand">Sand</option>
+        <option value="clay">Clay</option>
+        <option value="loess">Loess</option>
+        <option value="peat">Peat</option>
+      </select>
+      <button class="info-button" onclick="toggleInfo('info-soiltype')">?</button>
+      <div id="info-soiltype" class="info-text hidden">
+        Enter the type of soil your farm has.
+      </div>
+
+      <br> <br>
+
+      <label for="hummidity">Water Table (humidity) :</label>
+      <select id="hummidity">
+        <option value="">Select</option>
+        <option value="dry">Dry</option>
+        <option value="moist">Moist</option>
+        <option value="wet">Wet</option>
+      </select>
+      <button class="info-button" onclick="toggleInfo('info-soilhum')">?</button>
+      <div id="info-soilhum" class="info-text hidden">
+        Enter how humid the soil of your farm is.
+      </div>
+
+      <br> <br>
+
+      <label for="land">Land type:</label>
+      <select id="land">
+        <option value="">Select</option>
+        <option value="grassland">Grassland</option>
+        <option value="maize">Maize</option>
+        <option value="arable">Arable</option>
+      </select>
+      <button class="info-button" onclick="toggleInfo('info-landtype')">?</button>
+      <div id="info-landtype" class="info-text hidden">
+        Enter the type of land of your farm. 
+      </div>
+      <br> <br>
+
+      <label for="housing">Amount of time in housing (%):</label>
+      <input type="number" id="housing" min="0" max="100" placeholder="Type Percentage">
+      <button class="info-button" onclick="toggleInfo('info-housingtime')">?</button>
+      <div id="info-housingtime" class="info-text hidden">
+        Enter the amount of time your cows usually spend in housing.
+      </div>
+
+
+      <br> <br>
+
+      <label for="grazing">Amount of time in grazing (%):</label>
+      <input type="number" id="grazing" min="0" max="100" placeholder="Type Percentage">
+      <button class="info-button" onclick="toggleInfo('info-grazingtime')">?</button>
+      <div id="info-grazingtime" class="info-text hidden">
+        Enter the amount of time your cows usually spend grazing.
+      </div> </div>
+
+      <button id="calculate" class="calculate-button" onclick="showDiagram()">Calculate</button>
+    </div>
+
+    <div class="result-section">
+      <div class="band"> <h2> Results </h2> </div> 
+      <div class="slider-container">
+        <div class="slider">
+          <div class="slides">
+            <div id="slides__1" class="slide">
+              <span class="slide__text">
+                    <div class="interior">  
+                        <div class="container">
+                          <img src="before.jpeg" alt="Farm water diagram">
+                          <hr class="line1" />
+                          <hr class="line2" />
+                          <div class="vl"></div>
+                          <div class="arrow1"><span>&#8592;</span></div>
+                          <div class="arrow2"><span>&#x2191;</span></div>
+                          <div class="arrow3"><span>&#x2193;</span></div>
+                          <div class="arrow4"><span>&#x2193;</span></div>
+                          <div class="arrow5"><span>&#8592;</span></div>
+                          <div class="arrow6"><span>&#8625;</span></div>
+                          <div class="arrow7"><span>&#10549;</span></div>
+                          <div class="arrow8"><span>&#8625;</span></div>
+                          <div class="arrow9"><span>&#10549;</span></div>
+                          <div class="arrow10"><span>&#x2193;</span></div>
+                          <div class="cloud-n2">N2</div>
+                          <div class="cloud-sf">N runoff to surface: <br> xxx kg/year</div>
+                          <div class="cloud-di">N runoff to ditches: <br> xxx kg/year</div>
+                          <div class="cloud-nh3">NH3: <br> xxx kg/year</div>
+                          <div class="cloud-ns">N2, NO2, N2O</div>
+                          <div class="cloud-total">total N in the soil: <br> xxx kg/year</div>
+                          <div class="cloud-nh4">NH4 leach to ground water: <br> xxx kg/year</div>
+                          <div class="cloud-no3">NO3 leach to ground water: <br> xxx kg/year</div>
+
+                        </div>
+                      
+                </div>
+              </span>
+              <a class="slide__prev" href="#slides__3" title="Next"></a>
+              <a class="slide__next" href="#slides__2" title="Next"></a>
+            </div>
+            <div id="slides__2" class="slide">
+              <span class="slide__text">
+                <p id="nitrogen-housing">Total nitrogen emission from housing:</p>
+                <p id="nitrogen-grazing">Total nitrogen emission from grazing:</p>
+                <p id="ammonia-housing">Total ammonia emission from housing:</p>
+                <p id="ammonia-grazing">Total ammonia emission from grazing:</p>
+                <p id="nitrification">Nitrification:</p>
+                <p id="denitrification">Denitrification:</p>
+                <p id="uptake">Uptake:</p>    
+                <p id="nh4-gw">Total NH4 leaching to groundwater:</p>
+                <p id="no3-gw">Total NO3 leaching to groundwater:</p>
+                <p id="ro-ditch">Total nitrogen runoff to ditches:</p>
+                <p id="ro-sw">Total nitrogen runoff to surface water:</p>
+                <p id="retention">Retention:</p>
+                <p id="ro-sea">Total nitrogen runoff to sea:</p>
+              </span>
+              <a class="slide__prev" href="#slides__1" title="Prev"></a>
+              <a class="slide__next" href="#slides__3" title="Next"></a>
+            </div>
+            <div id="slides__3" class="slide">
+              <span class="slide__text">
+                <style>
+                    #svgContainer {
+                       transition: opacity 1.5s ease-in-out;
+                       margin-top: 10px;
+                   }
+               </style>
+                <svg id="svgContainer" width="1010" height="600" font-size="12px">
+                    <rect x="170" y="20" width="120" height="50" rx="10" fill="#ffff99" stroke="black" />
+                    <text x="230" y="45" text-anchor="middle" dominant-baseline="middle" id="nh3_value">Ammonia</text>
+                
+                    <rect x="60" y="100" width="160" height="50" rx="10" fill="#ff9999" stroke="black" />
+                    <text x="140" y="120" text-anchor="middle" dominant-baseline="middle">Ammonia from housing:</text>
+                    <text x="140" y="135" text-anchor="middle" dominant-baseline="middle" id="ammonia-house"> </text>
+                
+                    <rect x="280" y="100" width="160" height="50" rx="10" fill="#99ff99" stroke="black" />
+                    <text x="360" y="120" text-anchor="middle" dominant-baseline="middle">Ammonia from grazing:</text>
+                    <text x="360" y="135" text-anchor="middle" dominant-baseline="middle" id="ammonia-graze"> </text>
+                
+                    <rect x="170" y="180" width="160" height="50" rx="10" fill="#d8b5d5" stroke="black" />
+                    <text x="250" y="205" text-anchor="middle" dominant-baseline="middle">Ammonia in the soil</text>
+                
+                    <rect x="170" y="260" width="160" height="50" rx="10" fill="#99ccff" stroke="black" />
+                    <text x="250" y="280" text-anchor="middle" dominant-baseline="middle">Ammonia in groundwater:</text>
+                    <text x="250" y="295" text-anchor="middle" dominant-baseline="middle" id="ammonia-gw"> </text>
+                
+                
+                    <!-- N2 Section -->
+                    <rect x="660" y="20" width="120" height="50" rx="10" fill="#99e6ff" stroke="black" />
+                    <text x="720" y="45" text-anchor="middle" dominant-baseline="middle">Nitrogen</text>
+                
+                    <rect x="520" y="100" width="160" height="50" rx="10" fill="#99ff99" stroke="black" />
+                    <text x="600" y="120" text-anchor="middle" dominant-baseline="middle">Nitrogen from grazing:</text>
+                    <text x="600" y="135" text-anchor="middle" dominant-baseline="middle" id="nitrogen-graze"> </text>
+                
+                    <rect x="780" y="100" width="160" height="50" rx="10" fill="#ff9999" stroke="black" />
+                    <text x="860" y="120" text-anchor="middle" dominant-baseline="middle">Nitrogen from housing:</text>
+                    <text x="860" y="135" text-anchor="middle" dominant-baseline="middle" id="nitrogen-house"> </text>
+                
+                
+                    <rect x="660" y="180" width="160" height="50" rx="10" fill="#d8b5d5" stroke="black" />
+                    <text x="740" y="205" text-anchor="middle" dominant-baseline="middle">Nitrogen in the soil</text>
+                
+                    <rect x="480" y="260" width="160" height="50" rx="10" fill="#99ccff" stroke="black" />
+                    <text x="560" y="280" text-anchor="middle" dominant-baseline="middle">Nitrogen in surface water:</text>
+                    <text x="560" y="295" text-anchor="middle" dominant-baseline="middle" id="runoff-sw"> </text>
+                
+                    <rect x="660" y="260" width="160" height="50" rx="10" fill="#ffcc99" stroke="black" />
+                    <text x="740" y="280" text-anchor="middle" dominant-baseline="middle">Nitrogen in groundwater:</text>
+                    <text x="740" y="295" text-anchor="middle" dominant-baseline="middle" id="nitrogen-gw"> </text>
+                
+                    <rect x="840" y="260" width="160" height="50" rx="10" fill="#99ff99" stroke="black" />
+                    <text x="920" y="280" text-anchor="middle" dominant-baseline="middle">Nitrogen in ditches:</text>
+                    <text x="920" y="295" text-anchor="middle" dominant-baseline="middle" id="runoff-ditch"> </text>
+                
+                    <rect x="480" y="340" width="160" height="50" rx="10" fill="#66ccff" stroke="black" />
+                    <text x="560" y="360" text-anchor="middle" dominant-baseline="middle">Nitrogen in sea:</text>
+                    <text x="560" y="375" text-anchor="middle" dominant-baseline="middle" id="runoff-sea"> </text>
+                
+                
+                    <!-- Connecting Lines -->
+                    <line x1="230" y1="70" x2="140" y2="100" stroke="black" />
+                    <rect class="label_bg" x="175" y="75" width="40" height="16" fill="white" stroke="none" visibility="hidden"/>
+                    <text class="flow_label" x="195" y="87" text-anchor="middle" visibility="hidden">Emission</text>
+                
+                    <line x1="230" y1="70" x2="360" y2="100" stroke="black" />
+                    <rect class="label_bg" x="285" y="75" width="40" height="16" fill="white" stroke="none" visibility="hidden"/>
+                    <text class="flow_label" x="305" y="87" text-anchor="middle" visibility="hidden">Emission</text>
+                
+                    <line x1="140" y1="150" x2="250" y2="180" stroke="black" />
+                    <rect class="label_bg" x="185" y="155" width="40" height="16" fill="white" stroke="none" visibility="hidden"/>
+                    <text class="flow_label" x="205" y="167" text-anchor="middle" visibility="hidden">Emission</text>
+                
+                    <line x1="360" y1="150" x2="250" y2="180" stroke="black" />
+                    <rect class="label_bg" x="295" y="155" width="40" height="16" fill="white" stroke="none" visibility="hidden"/>
+                    <text class="flow_label" x="315" y="167" text-anchor="middle" visibility="hidden">Emission</text>
+                
+                    <line x1="250" y1="230" x2="250" y2="260" stroke="black" />
+                    <rect class="label_bg" x="230" y="235" width="40" height="16" fill="white" stroke="none" visibility="hidden"/>
+                    <text class="flow_label" x="250" y="247" text-anchor="middle" visibility="hidden">Leaching</text>
+                
+                    
+                    <line x1="720" y1="70" x2="600" y2="100" stroke="black" />
+                    <rect class="label_bg" x="650" y="75" width="40" height="16" fill="white" stroke="none" visibility="hidden"/>
+                    <text class="flow_label" x="670" y="87" text-anchor="middle" visibility="hidden">Emission</text>
+                
+                    <line x1="720" y1="70" x2="860" y2="100" stroke="black" />
+                    <rect class="label_bg" x="790" y="75" width="40" height="16" fill="white" stroke="none" visibility="hidden"/>
+                    <text class="flow_label" x="810" y="87" text-anchor="middle" visibility="hidden">Emission</text>
+                
+                    <line x1="600" y1="150" x2="740" y2="180" stroke="black" />
+                    <rect class="label_bg" x="660" y="155" width="40" height="16" fill="white" stroke="none" visibility="hidden"/>
+                    <text class="flow_label" x="680" y="167" text-anchor="middle" visibility="hidden">Emission</text>
+                
+                    <line x1="860" y1="150" x2="740" y2="180" stroke="black" />
+                    <rect class="label_bg" x="785" y="155" width="40" height="16" fill="white" stroke="none" visibility="hidden"/>
+                    <text class="flow_label" x="805" y="167" text-anchor="middle" visibility="hidden">Emission</text>
+                
+                    <line x1="720" y1="230" x2="560" y2="260" stroke="black" />
+                    <rect class="label_bg" x="630" y="235" width="40" height="16" fill="white" stroke="none" visibility="hidden"/>
+                    <text class="flow_label" x="650" y="247" text-anchor="middle" visibility="hidden">Runoff</text>
+                
+                    <line x1="720" y1="230" x2="740" y2="260" stroke="black" />
+                    <rect class="label_bg" x="720" y="235" width="40" height="16" fill="white" stroke="none" visibility="hidden"/>
+                    <text class="flow_label" x="740" y="247" text-anchor="middle" visibility="hidden">Leaching</text>
+                
+                    <line x1="720" y1="230" x2="920" y2="260" stroke="black" />
+                    <rect class="label_bg" x="820" y="235" width="40" height="16" fill="white" stroke="none" visibility="hidden"/>
+                    <text class="flow_label" x="840" y="247" text-anchor="middle" visibility="hidden">Runoff</text>
+                
+                    <line x1="560" y1="310" x2="560" y2="340" stroke="black" /> 
+                    <rect class="label_bg" x="540" y="315" width="40" height="16" fill="white" stroke="none" visibility="hidden"/>
+                    <text class="flow_label" x="560" y="327" text-anchor="middle" visibility="hidden">Runoff</text>
+                    </svg>
+              </span>
+              <a class="slide__prev" href="#slides__2" title="Prev"></a>
+              <a class="slide__next" href="#slides__1" title="Next"></a>
+            </div>
+          </div>
+          <script>
+            document.addEventListener("DOMContentLoaded", () => {
+              const slides = document.querySelectorAll(".slide");
+              const navLinks = document.querySelectorAll(".slider__navlink");
+          
+              const observer = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                  if (entry.isIntersecting) {
+                    const id = entry.target.id;
+                    navLinks.forEach(link => {
+                      link.classList.toggle("active", link.getAttribute("href") === `#${id}`);
+                    });
+                  }
+                });
+              }, {
+                threshold: 0.6 // adjust sensitivity as needed
+              });
+          
+              slides.forEach(slide => observer.observe(slide));
+            });
+          </script>
+                  <div class="slider__nav">
+                    <a class="slider__navlink" href="#slides__1"></a>
+                    <a class="slider__navlink" href="#slides__2"></a>
+                    <a class="slider__navlink" href="#slides__3"></a>
+                  </div>
+              </div>
+          </div>
+        </div>
+      </div>
+
+        <div class="cloud-thres">
+          <div class="cloud-thres-text">
+        </div>
+      </div>
+
+    </div>  
+
+  </body>
+</html>
