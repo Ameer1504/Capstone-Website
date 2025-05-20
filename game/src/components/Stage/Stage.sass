@@ -1,0 +1,83 @@
+@import ../../styles/variables.sass
+
+.Stage
+  background-size: 96px
+  flex: 2
+  image-rendering: pixelated
+  margin-left: 0px
+  overflow: auto
+  padding: 1.5em 1.5em 0
+  position: relative
+  transition: margin-left $duration-entering-screen $easing-ease-out
+
+  h3
+    text-align: center
+
+  .use-alternate-end-day-button-position &
+    padding-top: 4em
+
+    @media (max-width: #{$break-small-phone})
+      padding-top: 4.5em
+
+  .menu-open &
+    transition-property: padding, margin-left
+
+    @media (max-width: #{$break-sm})
+      padding: 0
+
+    > *
+      opacity: 1
+      transition: opacity $duration-entering-screen $easing-ease-out
+
+      @media (max-width: #{$break-sm})
+        opacity: 0
+
+  .menu-closed &
+    margin-left: -$sidebar-width
+    transition: margin-left $duration-leaving-screen $easing-sharp
+
+    @media (max-width: #{$break-small-phone})
+      margin-left: -$narrow-sidebar-width
+
+  &[data-stage-focus=HOME]
+    background-image: url('../../img/ui/brown-dot-bg.png')
+
+    &.is-october
+      background-image: url('../../img/ui/jack-o-lantern-bg.png')
+
+    &.is-december
+      background-image: url('../../img/ui/winter-bg.png')
+
+  &[data-stage-focus=SHOP]
+    background-image: url('../../img/ui/yellow-dot-bg.png')
+
+  &[data-stage-focus=WORKSHOP]
+    background-image: url('../../img/ui/lavender-dot-bg.png')
+
+  &[data-stage-focus=CELLAR]
+    background-image: url('../../img/ui/green-dot-bg.png')
+
+  &[data-stage-focus=FIELD],
+  &[data-stage-focus=COW_PEN]
+    background-image: url('../../img/ui/grass.png')
+    background-size: 30%
+
+    @media (min-width: #{$break-md})
+      background-size: 10%
+
+  h2
+    font-size: 1.2em
+
+  .view-title
+    font-size: 2.5em
+    margin-bottom: 0.6em
+    text-align: center
+
+    @media (min-width: #{$break-large-phone})
+      display: none
+
+  section
+    padding: .5em 0
+
+    @media (max-width: #{$break-sm})
+      font-size: 1em

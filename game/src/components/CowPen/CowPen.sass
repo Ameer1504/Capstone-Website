@@ -1,0 +1,119 @@
+@import ../../styles/variables.sass
+
+.CowPen
+  overflow: hidden
+
+  // This MUST be kept in sync with Cow.hugAnimationDuration in CowPen.js.
+  $hug-animation-duration: 750ms
+
+  .cow
+    opacity: 0
+    position: absolute
+    z-index: 20
+    transition: opacity $duration-entering-screen $easing-ease-out
+
+    &:hover
+      cursor: pointer
+
+    &::before
+      background: hsla(0, 0%, 30%, .5)
+      border-radius: 50%
+      bottom: 5px
+      content: ''
+      height: 16px
+      left: 16px
+      position: absolute
+      width: 75px
+      z-index: -1
+
+    &.is-loaded
+      opacity: 1
+
+    &.is-selected
+      // Render the selected cow on top of all others
+      z-index: 40
+
+      img
+        filter: drop-shadow(0 0 5px #fff)
+
+    img
+      width: 100px
+      transition: filter $duration-entering-screen $easing-ease-out
+
+    .fa-heart
+      color: $heart-color
+
+      &.animation
+        opacity: 0
+        position: absolute
+        right: 20px
+        top: 10px
+        transform: translateY(0px) scale(1)
+
+
+        &.is-animating
+          animation-name: hug-indicator
+          animation-duration: $hug-animation-duration
+          animation-fill-mode: forwards
+          animation-timing-function: ease-out
+          animation-iteration-count: 1
+
+    .is-transitioning
+      img
+        animation-name: is-transitioning-keyframes
+        animation-duration: 500ms
+        animation-fill-mode: forwards
+        animation-timing-function: linear
+        animation-iteration-count: infinite
+    .manure-manager
+      transition: transform 0.2s ease
+      pointer-events: none
+
+      img
+        filter: drop-shadow(0 0 4px rgba(0, 0, 0, 0.5))
+
+      &:hover
+        transform: scale(1.1)
+
+  .manure-manager-tooltip-target
+    position: absolute
+    width: 100%
+    height: 100%
+    top: 0
+    left: 0
+    pointer-events: auto
+    
+  .happiness-boosts-today
+    bottom: -12px
+    display: flex
+    justify-content: space-evenly
+    left: 10%
+    position: absolute
+    width: 80%
+    z-index: -1
+
+  @keyframes is-transitioning-keyframes
+    0%,
+    100%
+      transform: translate(0px, 0px)
+
+    20%,
+    80%
+      transform: translate(0px, -32px)
+
+    40%,
+    60%
+      transform: translate(0px, -48px)
+
+  @keyframes hug-indicator
+    0%
+      opacity: 0
+      transform: translateY(0px) scale(1)
+
+    50%
+      opacity: 1
+      transform: translateY(-80px) scale(2)
+
+    100%
+      opacity: 0
+      transform: translateY(-80px) scale(2)

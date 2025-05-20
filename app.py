@@ -10,19 +10,38 @@ from pmdarima import auto_arima
 warnings.filterwarnings("ignore")
 
 #############################
-#  (A) HELPER FUNCTION
+#  (A) HELPER FUNCTIONS
 #############################
 def show_html(filename, height=900, scrolling=True):
     """
     Loads an HTML file from templates/ and displays it in an iframe within Streamlit.
+    (Used here for the 'landing_page.html' in templates/.)
     """
     try:
         html_path = pathlib.Path(f"templates/{filename}")
+        if not html_path.exists():
+            st.error(f"Could not find {filename} in templates/ folder.")
+            return
         html_content = html_path.read_text(encoding="utf-8")
-        # If needed, set unsafe_allow_html=True
         st.components.v1.html(html_content, height=height, scrolling=scrolling)
     except Exception as e:
         st.error(f"Could not load {filename}: {e}")
+
+def show_farm_game():
+    """
+    Reads the compiled Farmhand game index from game/static/index.html
+    and embeds it as an iframe via st.components.v1.html.
+    """
+    try:
+        game_index = pathlib.Path("game/static/index.html")
+        if not game_index.exists():
+            st.error("Game files not found! Make sure the 'dist' build output "
+                     "is copied to 'game/static/'.")
+            return
+        html_str = game_index.read_text(encoding="utf-8")
+        st.components.v1.html(html_str, height=800, scrolling=True)
+    except Exception as e:
+        st.error(f"Could not load the Farmhand game: {e}")
 
 
 #############################
@@ -243,16 +262,20 @@ def main():
     st.set_page_config(page_title="My Water Theme Demo", layout="wide")
 
     # Create tabs at the top
-    tab_list = st.tabs(["Home", "Pollutant Forecast"])
+    tab_list = st.tabs(["Home", "Pollutant Forecast", "Farm Game"])
     
     # Tab 1: Home (Landing Page)
     with tab_list[0]:
-        # Show your landing page HTML
         show_html("landing_page.html", height=900)
 
     # Tab 2: ARIMA Forecast Page
     with tab_list[1]:
         run_arima_forecast()
+
+    # Tab 3: Farm Game
+    with tab_list[2]:
+        st.subheader("Farmhand Game Demo")
+        show_farm_game()
 
 
 if __name__ == "__main__":
