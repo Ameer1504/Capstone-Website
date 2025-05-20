@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nitrogen emissions calculator</title>
+    <link rel="stylesheet" href="../static/styles.css">
+    <script src="script.js" defer></script> 
+</head>
+  <body>
+    <!-- INPUT -->
+    <div class="header"><h2>Nitrogen Emission Calculator</h2></div>
+    <div class="container">
+      <div class="calculation-section">
+      <div class="band">
+        <h2>Farm Location Information</h2> </div>
+      <div class="interior">
+      <label for="region">Region</label>
+      <select id="region">
+        <option value="">Select</option>
+        <option value="ijssel">IJssel</option>
+        <option value="ijsselmeer">IJsselmeer</option>
+        <option value="maas">Maas</option>
+        <option value="central">Central Netherlands</option>
+        <option value="south-delta">Southern Delta</option>
+      </select>
+      <button class="info-button" onclick="toggleInfo('info-region')">?</button>
+      <div id="info-region" class="info-text hidden">
+        Enter the region of the Netherlands where your farm is located.
+      </div> 
+    
+      <br> <br>
+      <label for="size-ha">Size of farm (in hA):</label>
+      <input type="number" id="size-ha" min="0" placeholder="Type Number">
+      <button class="info-button" onclick="toggleInfo('info-size')">?</button>
+      <div id="info-size" class="info-text hidden">
+        Enter the size of your farm in hectares. 
+      </div> </div>
+     
+      <div class="band">
+        <h2>Animal Information</h2> </div>
+        <div class="interior">
+          <label for="cows">Amount of cows:
+          </label>
+        <input type="number" id="cows" min="0" placeholder="Type Number">
+        <button class="info-button" onclick="toggleInfo('info-cows')">?</button>
+        <div id="info-cows" class="info-text hidden">
+          Enter the number of cows in your farm.
+        </div>
+
+      <br><br>
+      <label for="feed">Feed type:</label>  
+      <select id="feed">
+        <option value="">Select</option>
+        <option value="corn">Corn</option>
+        <option value="grass">Grass</option>
+        <option value="corngrass">Corn + Grass</option>
+      </select>
+      <button class="info-button" onclick="toggleInfo('info-feed')">?</button>
+      <div id="info-feed" class="info-text hidden">
+        Enter the type of feed the cows are consuming.
+      </div></div>
+
+    
+      <div class="band">
+        <h2>Farm Information</h2> 
+      </div> 
+      <div class="interior">
+      <label for="soil">Soil Type:</label>
+      <select id="soil">
+        <option value="">Select</option>
+        <option value="sand">Sand</option>
+        <option value="clay">Clay</option>
+        <option value="loess">Loess</option>
+        <option value="peat">Peat</option>
+      </select>
+      <button class="info-button" onclick="toggleInfo('info-soiltype')">?</button>
+      <div id="info-soiltype" class="info-text hidden">
+        Enter the type of soil your farm has.
+      </div>
+
+      <br> <br>
+
+      <label for="hummidity">Water Table (humidity) :</label>
+      <select id="hummidity">
+        <option value="">Select</option>
+        <option value="dry">Dry</option>
+        <option value="moist">Moist</option>
+        <option value="wet">Wet</option>
+      </select>
+      <button class="info-button" onclick="toggleInfo('info-soilhum')">?</button>
+      <div id="info-soilhum" class="info-text hidden">
+        Enter how humid the soil of your farm is.
+      </div>
+
+      <br> <br>
+
+      <label for="land">Land type:</label>
+      <select id="land">
+        <option value="">Select</option>
+        <option value="grassland">Grassland</option>
+        <option value="maize">Maize</option>
+        <option value="arable">Arable</option>
+      </select>
+      <button class="info-button" onclick="toggleInfo('info-landtype')">?</button>
+      <div id="info-landtype" class="info-text hidden">
+        Enter the type of land of your farm. 
+      </div>
+      <br>
+
+      <label for="housing">Amount of time in housing (%):</label> 
+      <input type="number" id="housing" min="0" max="100" placeholder="Type Percentage">
+      <button class="info-button" onclick="toggleInfo('info-housingtime')">?</button>
+      <div id="info-housingtime" class="info-text hidden">
+        Enter the amount of time your cows usually spend in housing.
+      </div>
+
+
+      <br> <br>
+
+      <label for="grazing">Amount of time in grazing (%):</label>
+      <input type="number" id="grazing" min="0" max="100" placeholder="Type Percentage">
+      <button class="info-button" onclick="toggleInfo('info-grazingtime')">?</button>
+      <div id="info-grazingtime" class="info-text hidden">
+        Enter the amount of time your cows usually spend grazing.
+      </div> </div>
+
+      <button id="calculate" class="calculate-button">Calculate</button>
+    </div>
+
+    <div class="result-section">
+      <div class="band"> <h2> Results </h2> </div> 
+      <div class="interior">  
+        <div class="container">
+          <img src="before.jpeg" alt="Farm water diagram">
+          <hr class="line1" />
+          <hr class="line2" />
+          <div class="vl"></div>
+          <div class="arrow1"><span>&#8592;</span></div>
+          <div class="arrow2"><span>&#x2191;</span></div>
+          <div class="arrow3"><span>&#x2193;</span></div>
+          <div class="arrow4"><span>&#x2193;</span></div>
+          <div class="arrow5"><span>&#8592;</span></div>
+          <div class="arrow6"><span>&#8625;</span></div>
+          <div class="arrow7"><span>&#10549;</span></div>
+          <div class="arrow8"><span>&#8625;</span></div>
+          <div class="arrow9"><span>&#10549;</span></div>
+          <div class="arrow10"><span>&#x2193;</span></div>
+          <div class="cloud-n2">N2</div>
+          <div class="cloud-sf">N runoff to surface: <br> xxx kg/year</div>
+          <div class="cloud-di">N runoff to ditches: <br> xxx kg/year</div>
+          <div class="cloud-nh3">NH3: <br> xxx kg/year</div>
+          <div class="cloud-ns">N2, NO2, N2O</div>
+          <div class="cloud-total">total N in the soil: <br> xxx kg/year</div>
+          <div class="cloud-nh4">NH4 leach to ground water: <br> xxx kg/year</div>
+          <div class="cloud-no3">NO3 leach to ground water: <br> xxx kg/year</div>
+        </div>
+      
+      <p id="nitrogen-housing">Total nitrogen emission from housing:</p>
+      <p id="nitrogen-grazing">Total nitrogen emission from grazing:</p>
+      <p id="ammonia-housing">Total ammonia emission from housing:</p>
+      <p id="ammonia-grazing">Total ammonia emission from grazing:</p>
+      <p id="nitrification">Nitrification:</p>
+      <p id="denitrification">Denitrification:</p>
+      <p id="uptake">Uptake:</p>    
+      <p id="nh4-gw">Total NH4 leaching to groundwater:</p>
+      <p id="no3-gw">Total NO3 leaching to groundwater:</p>
+      <p id="ro-ditch">Total nitrogen runoff to ditches:</p>
+      <p id="ro-sw">Total nitrogen runoff to surface water:</p>
+      <p id="retention">Retention:</p>
+      <p id="ro-sea">Total nitrogen runoff to sea:</p>
+      </div>
+    </div>
+  </div>
+  </body>
+</html>

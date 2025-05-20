@@ -8,11 +8,10 @@ from arima_forecast.forecast_page import run_arima_forecast
 
 warnings.filterwarnings("ignore")
 
-
 def show_html(filename, height=900, scrolling=True):
     """
     Loads an HTML file from templates/ and displays it in an iframe within Streamlit.
-    Used for 'landing_page.html' in the 'templates/' folder.
+    Used for 'landing_page.html' and any other .html in the 'templates/' folder.
     """
     try:
         html_path = pathlib.Path(f"templates/{filename}")
@@ -47,12 +46,19 @@ def show_farm_game():
 def main():
     """
     Main entry point for the Streamlit app.
-    Creates three top tabs: Home, Pollutant Forecast, Farm Game.
+    Creates five top tabs: 
+      [Home, Pollutant Forecast, Farm Game, Nitrogen Calculator, Water Score].
     """
     st.set_page_config(page_title="My Water Theme Demo", layout="wide")
 
     # Create tabbed layout at the top
-    tabs = st.tabs(["Home", "Pollutant Forecast", "Farm Game"])
+    tabs = st.tabs([
+        "Home", 
+        "Pollutant Forecast", 
+        "Farm Game", 
+        "Nitrogen Calculator",
+        "Water Score"
+    ])
 
     # --- Tab 1: Home (Landing Page)
     with tabs[0]:
@@ -68,6 +74,20 @@ def main():
         st.subheader("Farmhand Game Demo")
         show_farm_game()
 
+    # --- Tab 4: Nitrogen Calculator
+    with tabs[3]:
+        st.subheader("Nitrogen Emissions Calculator")
+        # This will embed indexnew.html from your templates/ folder
+        # (adjust filename or height as needed)
+        show_html("indexnew.html", height=1200)
+
+    # --- Tab 5: Water Score
+    with tabs[4]:
+        st.subheader("Water Score Calculator")
+        # Embeds waterscore.html from your templates/ folder
+        show_html("waterscore.html", height=1200)
+        # If you want a separate tab for waterscoreinfo.html or svg.html,
+        # you can create more tabs or link inside waterscore.html.
 
 if __name__ == "__main__":
     main()
